@@ -47,7 +47,7 @@ public class ControllerServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException  {
 		String action = request.getPathInfo();
-
+		System.out.println("this is the action" + action);
 		try {
 			switch(action) {
 				case "/admin":
@@ -59,6 +59,9 @@ public class ControllerServlet extends HttpServlet {
 				case "/insert":
 					insertBook(request, response);
           break;
+				case "/delete":
+					deleteBook(request,response);
+					break;
         default:
 				   listBooks(request, response);
            break;
@@ -91,6 +94,12 @@ public class ControllerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/BookForm.jsp");
 		dispatcher.forward(request, response);
+	}
+
+	private void deleteBook(HttpServletRequest request,  HttpServletResponse response)throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        bookDAO.deleteBook(id);
+        response.sendRedirect("list");
 	}
 
 	private void insertBook(HttpServletRequest request, HttpServletResponse response)
